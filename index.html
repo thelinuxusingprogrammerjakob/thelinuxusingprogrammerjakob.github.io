@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>Dr. Rempels Projekt</title>
+
+    <link rel="stylesheet" type="text/css" href="style.css" />
+
+    <!-- <script src="libraries/p5.min.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
+    <!-- <script src="libraries/p5.sound.min.js"></script> -->
+  </head>
+
+  <body>
+    <!-- <script>
+      var xhttp = new XMLHttpRequest();
+
+      if (!window.XMLHttpRequest) {
+        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+      }
+
+      xhttp.onreadystatechange = function () {
+        //wenn es erfolgreich war
+        if (this.readyState == 4 && this.status == 200) {
+          console.log(xhttp.responseText);
+        }
+      };
+
+      xhttp.open("GET", "func.php", true);
+      xhttp.send();
+    </script> -->
+
+    <script src="sketch.js"></script>
+
+    <div class="saveThings">
+      <h5 id="save" onclick="saveNormal()">Click to save the colors normal.</h5>
+      <h5 id="saveColors" onclick="saveColors()">
+        Click to save the colors human-readable.
+      </h5>
+      <h5 id="saveArray" onclick="saveArray()">
+        Click to save the colors as an array.
+      </h5>
+    </div>
+
+    <div class="container">
+      <div class="container__item">
+        <form class="form">
+          <input
+            type="url"
+            class="form__field"
+            value=""
+            id="url-input"
+            placeholder="https://my_picture.jpg"
+          />
+          <button
+            onclick="newImage()"
+            type="button"
+            class="btn btn--primary btn--inside"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+
+      <div class="container__item">
+        <form class="form">
+          <input
+            type="number"
+            class="form__field"
+            value="1"
+            min="1"
+            id="speed-input"
+            placeholder="speed of drawing"
+          />
+          <button
+            onclick="setSpeed()"
+            type="button"
+            class="btn btn--primary btn--inside"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+
+      <div class="container__item">
+        <form class="form">
+          <input
+            type="number"
+            class="form__field"
+            value="0"
+            min="0"
+            id="gap-input"
+            placeholder="gap between pixels"
+          />
+          <button
+            onclick="setGap()"
+            type="button"
+            class="btn btn--primary btn--inside"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+
+      <div class="container__item">
+        <form class="form">
+          <input
+            class="form__field"
+            type="number"
+            min="1"
+            id="len-input"
+            placeholder="length of LED Strip. Default: auto"
+          />
+          <button
+            onclick="setLen()"
+            type="button"
+            class="btn btn--primary btn--inside"
+          >
+            Send
+          </button>
+        </form>
+      </div>
+    </div>
+  </body>
+</html>
