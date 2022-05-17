@@ -8,6 +8,8 @@ let direction;
 let pic;
 let speed = 1;
 let gap = 0;
+// wo mit drawing angefangen wird
+let begin = -90;
 
 function setup() {
   createCanvas(windowWidth, windowHeight / 1.5);
@@ -19,7 +21,7 @@ function setup() {
 }
 
 let keep = true;
-let currAngle = 0;
+let currAngle = begin;
 
 function draw() {
   if (!keep) {
@@ -43,29 +45,34 @@ function prepareArray() {
     pixelColors[i] = new Array(len);
   }
 
-  for (let angle = 0; angle < 360; angle++) {
+  let iterator = 0;
+  for (let angle = begin; angle >= -360 + begin + 1; angle--) {
     for (let i = 0; i < len; i++) {
       currPixel.set(center);
       let direction = createVector();
       direction.set(p5.Vector.fromAngle(radians(angle), i));
       currPixel.add(direction);
-      pixelColors[angle][i] = pic.get(int(currPixel.x), int(currPixel.y));
+      pixelColors[iterator][i] = pic.get(int(currPixel.x), int(currPixel.y));
     }
+    iterator++;
   }
+  console.log("prepared");
 }
 
 function saveColors() {
   prepareArray();
   const writer = createWriter("color_data.txt");
   for (let angle = 0; angle < 360; angle++) {
-    writer.write(angle + "°");
+    writer.print(angle + "°");
     for (let i = 0; i < len; i++) {
       let pixel = pixelColors[angle][i];
-      writer.write("pixel: " + i);
-      writer.write(" r: " + red(pixel));
-      writer.write(" g: " + green(pixel));
-      writer.write(" b: " + blue(pixel));
+      writer.write("  " + i);
+      writer.write("    r: " + red(pixel));
+      writer.write("    g: " + green(pixel));
+      writer.write("    b: " + blue(pixel));
+      writer.print("");
     }
+    writer.print("");
   }
   writer.close();
   writer.clear();
@@ -93,6 +100,7 @@ function saveArray() {
   writer.print("};");
   writer.close();
   writer.clear();
+  console.log("human readalbe");
 }
 
 function saveNormal() {
@@ -128,8 +136,7 @@ function drawPicture(drawAngle) {
     );
   }
   updatePixels();
-  currAngle++;
-  currAngle %= 360;
+  currAngle--;
 }
 
 function getCssVariable(name) {
@@ -146,11 +153,12 @@ function newImage() {
   let userURL = document.getElementById("url-input").value;
   if (userURL == "") {
     background(getCssVariable("background-color"));
-    currAngle = 0;
+    currAngle = begin;
     return;
   }
   pic = loadImage(userURL, prepareImage, errorLoadingImage);
   background(getCssVariable("background-color"));
+  currAngle = begin;
 }
 
 function prepareImage() {
@@ -175,14 +183,14 @@ function errorLoadingImage() {
 function setSpeed() {
   speed = int(document.getElementById("speed-input").value);
   background(getCssVariable("background-color"));
-  currAngle = 0;
+  currAngle = begin;
   keep = true;
 }
 
 function setGap() {
   gap = int(document.getElementById("gap-input").value);
   background(getCssVariable("background-color"));
-  currAngle = 0;
+  currAngle = begin;
   keep = true;
 }
 
@@ -200,6 +208,6 @@ function setLen() {
 
   center = createVector(pic.width / 2, pic.height / 2);
   background(getCssVariable("background-color"));
-  currAngle = 0;
+  currAngle = begin;
   keep = true;
 }
