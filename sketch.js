@@ -12,7 +12,9 @@ let gap = 0;
 let begin = -90;
 
 function setup() {
-  createCanvas(windowWidth, windowHeight / 1.5);
+  var cnv = createCanvas(windowWidth, windowHeight / 1.6);
+  cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2 + 100);
+  
   newImage();
 
   currPixel = createVector();
