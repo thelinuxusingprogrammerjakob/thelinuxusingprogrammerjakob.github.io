@@ -82,7 +82,7 @@ a:hover {
 }
 
 .form__field {
-  width: 360px;
+  width: 20vw;
   background: var(--background-Color);
   height: 10px;
   color: #a3a3a3;
