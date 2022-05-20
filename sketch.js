@@ -164,14 +164,18 @@ function newImage() {
 }
 
 function prepareImage() {
-  let widthOffset = (width - pic.width) / 2;
-  let heightOffset = (height - pic.height) / 2;
+  if (document.getElementById("len-input").value == "") {
+    let widthOffset = (width - pic.width) / 2;
+    let heightOffset = (height - pic.height) / 2;
 
-  let offset = min(widthOffset, heightOffset);
-  pic.resize(pic.width + offset, pic.height + offset);
+    let offset = min(widthOffset, heightOffset);
+    pic.resize(pic.width + offset, pic.height + offset);
 
-  len = int(min(pic.width / 2, pic.height / 2));
-  center = createVector(pic.width / 2, pic.height / 2);
+    len = int(min(pic.width / 2, pic.height / 2));
+    center = createVector(pic.width / 2, pic.height / 2);
+  }
+  // falls der User schon etwas vorgegeben hat
+  setLen();
 }
 
 function errorLoadingImage() {
