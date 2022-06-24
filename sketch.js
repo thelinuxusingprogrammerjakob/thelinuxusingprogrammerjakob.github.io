@@ -14,7 +14,7 @@ let begin = -90;
 function setup() {
   var cnv = createCanvas(windowWidth, windowHeight / 1.6);
   cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2 + 100);
-  newImage();
+  newImage("https://tse1.mm.bing.net/th?id=OIP.E0Npw3w83846g-H_DKMVqgHaHa&pid=Api");
 
   currPixel = createVector();
   direction = createVector();
@@ -189,6 +189,12 @@ function newImage() {
     return;
   }
   pic = loadImage(userURL, prepareImage, errorLoadingImage);
+  background(getCssVariable("background-color"));
+  currAngle = begin;
+}
+
+function newImage(url) {
+  pic = loadImage(url, prepareImage, errorLoadingImage);
   background(getCssVariable("background-color"));
   currAngle = begin;
 }
