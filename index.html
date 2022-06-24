@@ -10,32 +10,15 @@
 
     <!-- <script src="libraries/p5.min.js"></script> -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.4.0/p5.min.js"></script>
-    <!-- <script src="libraries/p5.sound.min.js"></script> -->
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/p5.js/0.5.6/addons/p5.dom.js"></script>
+    <script src="sketch.js"></script>
   </head>
 
   <body>
-    <!-- <script>
-      var xhttp = new XMLHttpRequest();
-
-      if (!window.XMLHttpRequest) {
-        xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-      }
-
-      xhttp.onreadystatechange = function () {
-        //wenn es erfolgreich war
-        if (this.readyState == 4 && this.status == 200) {
-          console.log(xhttp.responseText);
-        }
-      };
-
-      xhttp.open("GET", "func.php", true);
-      xhttp.send();
-    </script> -->
-
-    <script src="sketch.js"></script>
-
     <div class="saveThings">
-      <h5 id="save" onclick="saveNormal()">Click to save the colors normal.</h5>
+      <h5 id="save" onclick="saveEncoded()">
+        Click to save the colors encoded.
+      </h5>
       <h5 id="saveColors" onclick="saveColors()">
         Click to save the colors human-readable.
       </h5>
