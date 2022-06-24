@@ -111,7 +111,7 @@ function saveEncoded() {
   for (let angle = 0; angle < 360; angle++) {
     for (let i = 0; i < len; i++) {
       let pixel = pixelColors[angle][i];
-      writer.print(encode(red(pixel), green(pixel)), blue(pixel));
+      writer.print(encode(red(pixel), green(pixel), blue(pixel)));
     }
   }
   writer.close();
@@ -121,18 +121,6 @@ function saveEncoded() {
 let bStates = [0, 85, 180, 250];
 
 function encode(r, g, b) {
-  if (r == undefined) {
-    r = 0;
-  }
-
-  if (g == undefined) {
-    g = 0;
-  }
-
-  if (b == undefined) {
-    b = 0;
-  }
-
   let rEncode = round(r / ((r + g + b) / 6.0));
   let gEncode = round(g / ((r + g + b) / 6.0));
   let bEncode = round((r + g + b) / 3.0);
