@@ -14,7 +14,6 @@ let begin = -90;
 function setup() {
   var cnv = createCanvas(windowWidth, windowHeight / 1.6);
   cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2 + 100);
-  
   newImage();
 
   currPixel = createVector();
@@ -105,20 +104,63 @@ function saveArray() {
   console.log("human readalbe");
 }
 
-function saveNormal() {
+function saveEncoded() {
   prepareArray();
   const writer = createWriter("data.txt");
 
   for (let angle = 0; angle < 360; angle++) {
     for (let i = 0; i < len; i++) {
       let pixel = pixelColors[angle][i];
-      writer.print(red(pixel));
-      writer.print(green(pixel));
-      writer.print(blue(pixel));
+      writer.print(encode(red(pixel), green(pixel)), blue(pixel));
     }
   }
   writer.close();
   writer.clear();
+}
+
+let bStates = [0, 85, 180, 250];
+
+function encode(r, g, b) {
+  if (r == undefined) {
+    r = 0;
+  }
+
+  if (g == undefined) {
+    g = 0;
+  }
+
+  if (b == undefined) {
+    b = 0;
+  }
+
+  let rEncode = round(r / ((r + g + b) / 6.0));
+  let gEncode = round(g / ((r + g + b) / 6.0));
+  let bEncode = round((r + g + b) / 3.0);
+
+  let bestIndex = 0;
+
+  for (let i = 1; i < bStates.length; i++) {
+    if (abs(bStates[i] - bEncode) < abs(bStates[bestIndex] - bEncode)) {
+      bestIndex = i;
+    }
+  }
+  bEncode = bestIndex;
+
+  return (
+    Bytes2Bits(rEncode) + Bytes2Bits(gEncode) + Bytes2Bits(bEncode).slice(1)
+  );
+}
+
+function Bytes2Bits(b) {
+  let bytes = b.toString(2);
+  let l = bytes.length;
+
+  if (bytes.length < 3) {
+    for (let i = 0; i < 3 - l; i++) {
+      bytes = "0" + bytes;
+    }
+  }
+  return bytes;
 }
 
 function drawPicture(drawAngle) {
@@ -148,7 +190,7 @@ function getCssVariable(name) {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight / 1.5);
+  resizeCanvas(windowWidth, windowHeight / 1.6);
 }
 
 function newImage() {
