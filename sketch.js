@@ -14,7 +14,9 @@ let begin = -90;
 function setup() {
   var cnv = createCanvas(windowWidth, windowHeight / 1.6);
   cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2 + 100);
-  newImage("https://tse1.mm.bing.net/th?id=OIP.E0Npw3w83846g-H_DKMVqgHaHa&pid=Api");
+  newImage(
+    "https://tse1.mm.bing.net/th?id=OIP.E0Npw3w83846g-H_DKMVqgHaHa&pid=Api"
+  );
 
   currPixel = createVector();
   direction = createVector();
@@ -118,12 +120,13 @@ function saveEncoded() {
   writer.clear();
 }
 
-let bStates = [0, 85, 180, 250];
+let bStates = [0, 85, 170, 255];
 
 function encode(r, g, b) {
   let rEncode = round(r / ((r + g + b) / 6.0));
   let gEncode = round(g / ((r + g + b) / 6.0));
-  let bEncode = round((r + g + b) / 3.0);
+  //let bEncode = round((r + g + b) / 3.0);
+  let bEncode = round(r + g + b);
 
   let bestIndex = 0;
 
@@ -135,7 +138,7 @@ function encode(r, g, b) {
   bEncode = bestIndex;
 
   return (
-    Bytes2Bits(rEncode) + Bytes2Bits(gEncode) + Bytes2Bits(bEncode).slice(1)
+    Bytes2Bits(gEncode) + Bytes2Bits(rEncode) + Bytes2Bits(bEncode).slice(1)
   );
 }
 
