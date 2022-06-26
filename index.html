@@ -89,6 +89,7 @@
           <input
             class="form__field"
             type="number"
+            value="64"
             min="1"
             id="len-input"
             placeholder="length of LED Strip. Default: auto"
@@ -103,5 +104,46 @@
         </form>
       </div>
     </div>
+
+    <p id="orTag">or</p>
+    <div class="formContainer">
+      <form class="form">
+        <div
+          class="file-upload-wrapper"
+          id="test"
+          data-text="Select your file!"
+        >
+          <input type="file" id="file-selector" />
+        </div>
+      </form>
+    </div>
+    <p id="status"></p>
+    <!-- https://web.dev/read-files/ -->
+    <script>
+      const status = document.getElementById("status");
+      if (window.FileList && window.File && window.FileReader) {
+        document
+          .getElementById("file-selector")
+          .addEventListener("change", (event) => {
+            status.textContent = "";
+            const file = event.target.files[0];
+            if (!file.type) {
+              status.textContent =
+                "Error: The File.type property does not appear to be supported on this browser.";
+              return;
+            }
+            if (!file.type.match("image.*")) {
+              status.textContent =
+                "Error: The selected file does not appear to be an image.";
+              return;
+            }
+            const reader = new FileReader();
+            reader.addEventListener("load", (event) => {
+              newUsersImage(event.target.result);
+            });
+            reader.readAsDataURL(file);
+          });
+      }
+    </script>
   </body>
 </html>
