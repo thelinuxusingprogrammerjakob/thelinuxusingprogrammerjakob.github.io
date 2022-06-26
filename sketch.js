@@ -13,7 +13,7 @@ let begin = -90;
 
 function setup() {
   var cnv = createCanvas(windowWidth, windowHeight / 1.6);
-  cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2 + 100);
+  cnv.position((windowWidth - width) / 2, (windowHeight - height) / 2 + 150);
   newImage(
     "https://tse1.mm.bing.net/th?id=OIP.E0Npw3w83846g-H_DKMVqgHaHa&pid=Api"
   );
@@ -125,21 +125,37 @@ let bStates = [0, 85, 170, 255];
 function encode(r, g, b) {
   let rEncode = round(r / ((r + g + b) / 6.0));
   let gEncode = round(g / ((r + g + b) / 6.0));
-  //let bEncode = round((r + g + b) / 3.0);
-  let bEncode = round(r + g + b);
+  let blue = 6 - rEncode - gEncode;
 
-  let bestIndex = 0;
+  let factor;
 
-  for (let i = 1; i < bStates.length; i++) {
-    if (abs(bStates[i] - bEncode) < abs(bStates[bestIndex] - bEncode)) {
-      bestIndex = i;
+  if (gEncode == 2 && rEncode == 2 && blue == 2)
+    // White boost
+    factor = 255 / 6;
+  else if (gEncode == rEncode && blue == 0)
+    // yellow boost
+    factor = 170 / 6;
+  else factor = 85 / 6;
+
+  let bestH = 0;
+  // falls es nicht (nahe an) null ist
+  if (r + g + b > 10) {
+    // irgendein sehr hoher Wert
+    let bestHDiff = 1000;
+
+    // prüfen, welche Helligkeitsstufe am besten wäre (brute-force)
+    for (let h = 1; h <= 3; h++) {
+      rDecode = round(rEncode * factor * h);
+      gDecode = round(gEncode * factor * h);
+      bDecode = round((6 - rEncode - gEncode) * factor * h);
+
+      if (abs(r + g + b - (rDecode + gDecode + bDecode)) < bestHDiff) {
+        bestH = h;
+        bestHDiff = r + g + b - (rDecode + gDecode + bDecode);
+      }
     }
   }
-  bEncode = bestIndex;
-
-  return (
-    Bytes2Bits(gEncode) + Bytes2Bits(rEncode) + Bytes2Bits(bEncode).slice(1)
-  );
+  return Bytes2Bits(gEncode) + Bytes2Bits(rEncode) + Bytes2Bits(bestH).slice(1);
 }
 
 function Bytes2Bits(b) {
@@ -198,6 +214,12 @@ function newImage() {
 
 function newImage(url) {
   pic = loadImage(url, prepareImage, errorLoadingImage);
+  background(getCssVariable("background-color"));
+  currAngle = begin;
+}
+
+function newUsersImage(img) {
+  pic = loadImage(img, prepareImage, errorLoadingImage);
   background(getCssVariable("background-color"));
   currAngle = begin;
 }
