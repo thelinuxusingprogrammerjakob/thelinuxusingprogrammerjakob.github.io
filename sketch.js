@@ -10,6 +10,7 @@ let speed = 1;
 let gap = 0;
 // wo mit drawing angefangen wird
 let begin = -90;
+let userImage;
 
 function setup() {
   var cnv = createCanvas(windowWidth, windowHeight / 1.6);
@@ -214,23 +215,19 @@ function newImage() {
 }
 
 function newImageUrl(url) {
+  if (url == "") {
+    return;
+  }
   pic = loadImage(
     "https://anothercorsproxy.herokuapp.com/" + url,
     prepareImage,
     errorLoadingImage
   );
-
-  fetch("https://anothercorsproxy.herokuapp.com/" + url).catch((e) => {
-    pic = buffer;
-    document.getElementById("url-input").value = "can not load image.";
-  });
-
-  currAngle = begin;
 }
 
 function newUsersImage(img) {
-  pic = loadImage(img, prepareImage, errorLoadingImage);
-  currAngle = begin;
+  pic = userImage;
+  prepareImage();
 }
 
 function prepareImage() {
@@ -244,20 +241,15 @@ function prepareImage() {
     len = int(min(pic.width / 2, pic.height / 2));
     center = createVector(pic.width / 2, pic.height / 2);
   }
-  // falls der User schon etwas vorgegeben hat
+  // falls der user schon etwas vorgegeben hat
   setLen();
   background(getCssVariable("background-color"));
   currAngle = begin;
 }
 
 function errorLoadingImage() {
-  //gucken warum Bilder nicht geladen werden können
-  fetch(
-    "https://anothercorsproxy.herokuapp.com/https://www.gedichtladen.de/images/derdichter.jpg"
-  ).catch((e) => {
-    console.log(e);
-  });
-  // document.getElementById("url-input").value = "can not load image.";
+  console.log("can not load image");
+  // document.getElementById("url-input").value = "can not load image";
 }
 
 function setSpeed() {
@@ -282,10 +274,17 @@ function setLen() {
   }
 
   len = int(val);
-  //console.log(pic.width, pic.height);
   let resize = min(pic.width - 2 * len, pic.height - 2 * len);
-  pic.resize(pic.width - resize, pic.height - resize);
-  //console.log(pic.width, pic.height);
+
+  if (pic.width == min(pic.width, pic.height)) {
+    let scale = pic.width / (pic.width - resize);
+    pic.resize(pic.width - resize, pic.height / scale);
+  } else if (min(pic.width, pic.height) == pic.heigth) {
+    let scale = pic.height / (pic.height - resize);
+    pic.resize(pic.width / percent, pic.height - resize);
+  } else {
+    pic.resize(pic.width - resize, pic.height - resize);
+  }
 
   center = createVector(pic.width / 2, pic.height / 2);
   background(getCssVariable("background-color"));
